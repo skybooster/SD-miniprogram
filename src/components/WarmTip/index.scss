@@ -1,5 +1,5 @@
 .warm-tip-wrapper {
-  padding: 20px 24px;
+  padding: 20px 14px;
   animation: slideInDown 0.6s ease-out;
 }
 
@@ -7,7 +7,7 @@
   position: relative;
   display: flex;
   align-items: center;
-  padding: 24px 32px;
+  padding: 8px 28px;
   border-radius: 32px;
   background: linear-gradient(135deg, #FFD93D 0%, #FFA94D 50%, #FF6B6B 100%);
   box-shadow: 
@@ -51,7 +51,7 @@
   z-index: 1;
   
   .icon-star {
-    font-size: 28px;
+    font-size: 34px;
     color: #FF8C42;
     text-shadow: 0 2px 8px rgba(255, 107, 107, 0.4);
     animation: twinkle 1.5s ease-in-out infinite;
@@ -63,22 +63,22 @@
   background: transparent !important;
   padding: 0 !important;
   z-index: 1;
+}
+
+:global {
+  .warm-tip-notice .taroify-notice-bar__content {
+    color: #ffffff !important;
+    font-size: 46px !important;
+    font-weight: 900 !important;
+    text-shadow: 
+      0 2px 4px rgba(0, 0, 0, 0.15),
+      0 1px 2px rgba(255, 107, 107, 0.3);
+    letter-spacing: 1px;
+  }
   
-  :global {
-    .taroify-notice-bar__content {
-      color: #FFFFFF !important;
-      font-size: 28px !important;
-      font-weight: 600 !important;
-      text-shadow: 
-        0 2px 4px rgba(0, 0, 0, 0.15),
-        0 1px 2px rgba(255, 107, 107, 0.3);
-      letter-spacing: 1px;
-    }
-    
-    .taroify-notice-bar__wrap {
-      height: 48px !important;
-      line-height: 48px !important;
-    }
+  .warm-tip-notice .taroify-notice-bar__wrap {
+    height: 48px !important;
+    line-height: 48px !important;
   }
 }
 

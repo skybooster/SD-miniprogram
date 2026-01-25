@@ -1,0 +1,37 @@
+.custom-tabbar {
+  // 使用官方 CSS 变量自定义
+  --tabbar-height: 140px;
+  --tabbar-background-color: #FFFBF5;
+  --tabbar-item-font-size: 38px;
+  --tabbar-item-color: #D4A574;
+  --tabbar-item-line-height: 1.2;
+  --tabbar-item-icon-size: 46px;
+  --tabbar-item-margin-bottom: 6px;
+  --tabbar-item-active-color: #FF8C00;
+  --tabbar-item-active-background-color: transparent;
+  
+  // 额外样式
+  background: linear-gradient(180deg, #FFFBF5 0%, #FFF9ED 100%);
+  box-shadow: 0 -4px 20px rgba(255, 169, 77, 0.15);
+  border-top-left-radius: 24px;
+  border-top-right-radius: 24px;
+  border-top: 2px solid rgba(255, 217, 61, 0.2);
+  padding-bottom: env(safe-area-inset-bottom);
+
+  :global {
+    .taroify-tabbar__item {
+      font-weight: 800;
+      transition: all 0.3s ease;
+    }
+
+    .taroify-tabbar__item--active {
+      font-weight: 900;
+      
+      .taroify-tabbar__icon {
+        transform: scale(1.15);
+        filter: drop-shadow(0 3px 8px rgba(255, 140, 0, 0.35));
+      }
+    }
+  }
+}
+

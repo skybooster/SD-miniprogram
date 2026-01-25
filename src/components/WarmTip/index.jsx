@@ -15,6 +15,7 @@ export default function WarmTip({ text = '欢迎来到小程序' }) {
           <View className='icon-star'>★</View>
         </View>
         <NoticeBar 
+          style={{ color: "#000000" ,fontSize: '16px',fontWeight: '900'}}
           className='warm-tip-notice'
           scrollable
           speed={50}
@@ -25,4 +26,9 @@ export default function WarmTip({ text = '欢迎来到小程序' }) {
       </View>
     </View>
   )
+}
+
+WarmTip.options = {
+  addGlobalClass: true,
+  styleIsolation: 'shared'
 }
