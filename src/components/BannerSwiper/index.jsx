@@ -1,9 +1,9 @@
-import { Component } from 'react'
-import { View } from '@tarojs/components'
-import { Swiper, Image } from '@taroify/core'
-import '@taroify/core/swiper/style'
-import '@taroify/core/image/style'
-import './index.scss'
+import { Component } from "react";
+import { View } from "@tarojs/components";
+import { Swiper, Image } from "@taroify/core";
+import "@taroify/core/swiper/style";
+import "@taroify/core/image/style";
+import "./index.scss";
 
 /**
  * 轮播图组件
@@ -15,24 +15,24 @@ export default class BannerSwiper extends Component {
   static defaultProps = {
     images: [],
     autoplay: 3000,
-    height: 380
-  }
+    height: 380,
+  };
 
   state = {
-    current: 0
-  }
+    current: 0,
+  };
 
   onChange = (index) => {
-    this.setState({ current: index })
-    this.props.onChange?.(index)
-  }
+    this.setState({ current: index });
+    this.props.onChange?.(index);
+  };
 
   render() {
-    const { images, autoplay, height } = this.props
-    const { current } = this.state
+    const { images, autoplay, height } = this.props;
+    const { current } = this.state;
 
     if (!images || images.length === 0) {
-      return null
+      return null;
     }
 
     return (
@@ -53,17 +53,17 @@ export default class BannerSwiper extends Component {
             </Swiper.Item>
           ))}
         </Swiper>
-        
+
         {/* 指示器 */}
         <View className="banner-indicator">
           {images.map((_, index) => (
             <View
               key={index}
-              className={`indicator-dot ${current === index ? 'active' : ''}`}
+              className={`indicator-dot ${current === index ? "active" : ""}`}
             />
           ))}
         </View>
       </View>
-    )
+    );
   }
 }

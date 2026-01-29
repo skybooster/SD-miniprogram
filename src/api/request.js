@@ -1,9 +1,9 @@
-import Taro from '@tarojs/taro';
+import Taro from "@tarojs/taro";
 
-const BASE_URL = 'https://api.example.com'; // 替换为您的后端 API 地址
+const BASE_URL = process.env.TARO_APP_API;
 
 const request = (options) => {
-  const { url, method = 'GET', data = {} } = options;
+  const { url, method = "GET", data = {} } = options;
 
   return new Promise((resolve, reject) => {
     Taro.request({
@@ -11,7 +11,7 @@ const request = (options) => {
       method,
       data,
       header: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
         // 在这里添加其他请求头，例如 token
       },
       success: (res) => {

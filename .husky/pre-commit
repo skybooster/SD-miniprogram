@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+
+# 运行 lint-staged 在提交前格式化代码
+yarn lint-staged

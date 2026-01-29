@@ -1,4 +1,4 @@
 export default definePageConfig({
-  navigationStyle: 'custom',
-  navigationBarTitleText: '联系社区'
-})
+  navigationStyle: "custom",
+  navigationBarTitleText: "联系社区",
+});

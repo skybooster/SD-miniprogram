@@ -1,3 +1,3 @@
-import BannerSwiper from './index.jsx'
+import BannerSwiper from "./index.jsx";
 
-export default BannerSwiper
+export default BannerSwiper;
