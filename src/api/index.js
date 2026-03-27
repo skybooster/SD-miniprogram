@@ -1,3 +1,7 @@
+export * from "./community_service";
+export * from "./feedback";
+export * from "./healthService";
+export * from "./media";
 export * from "./bannerSwiper";
 export * from "./chat";
 export * from "./elderlyCareMeal";
@@ -10,3 +14,4 @@ export * from "./serviceMap";
 export * from "./warmTip";
 export * from "./serviceMap";
 export * from "./user";
+export * from "./ai_chat";
