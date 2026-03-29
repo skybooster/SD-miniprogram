@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package api.policy;
+
+message PolicyType {
+  int32 id = 1;
+  string type = 2;
+}
+
+message PolicyTypeResponse {
+  repeated PolicyType policyTypes = 1;
+  int32 code = 2;
+  string message = 3;
+}
+
+message PolicyFile {
+  int32 id = 1;
+  string title = 2;
+  string type = 3;
+  string index = 4;
+  int32 create_time = 5;
+}
+
+message PolicyFileResponse {
+  repeated PolicyFile policy_files = 1;
+  int32 code = 2;
+  string message = 3;
+}

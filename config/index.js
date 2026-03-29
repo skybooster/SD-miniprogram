@@ -25,7 +25,12 @@ export default defineConfig(async (merge, {}) => {
           : JSON.stringify("https://prod.api.com"),
     },
     copy: {
-      patterns: [],
+      patterns: [
+        {
+          from: "node_modules/pdfjs-dist/legacy/build/pdf.worker.min.js",
+          to: "dist/pdf.worker.min.js",
+        },
+      ],
       options: {},
     },
     framework: "react",
