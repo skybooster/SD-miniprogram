@@ -8,9 +8,9 @@
 .header-section {
   background: linear-gradient(
     180deg,
-    #50dcb6 0%,
-    #87e8d6 80%,
-    rgb(135 232 214 / 0%) 100%
+    #ff9bc2 0%,
+    #e464a3 80%,
+    rgb(228 100 163 / 0%) 100%
   );
   padding: 3vh 6vw 10vh;
   display: flex;
@@ -133,7 +133,7 @@
 
       .feature-icon {
         font-size: 40px;
-        color: #50dcb6; /* 使用主题色 */
+        color: #e464a3;
         margin-right: 3vw;
       }
 
@@ -163,7 +163,7 @@
     font-size: 18px;
     font-weight: 500;
     color: #fff;
-    box-shadow: 0 1vh 3vw rgb(80 220 182 / 40%);
+    box-shadow: 0 1vh 3vw rgb(228 100 163 / 35%);
     border-radius: 3.5vh;
   }
 }

@@ -1,4 +1,150 @@
-.page {
-  padding: 40px;
+.health-guidance-page {
+  min-height: 100vh;
+  background-color: #fff3f7;
+  padding-bottom: 40px;
+}
+
+.custom-header {
+  background: linear-gradient(135deg, #ff9ec1 0%, #f172a1 100%);
+  padding-bottom: 20px;
+
+  .nav-bar {
+    display: flex;
+    align-items: center;
+    padding-left: 16px;
+    padding-top: 6vh;
+
+    .back-btn {
+      display: flex;
+      align-items: center;
+      background: rgb(255 255 255 / 20%);
+      padding: 10px 24px 10px 14px;
+      border-radius: 40px;
+      color: #fff;
+      font-size: 30px;
+      backdrop-filter: blur(4px);
+    }
+  }
+
+  .header-content {
+    text-align: center;
+    padding: 20px 0 30px;
+    color: #fff;
+
+    .title {
+      display: block;
+      font-size: 40px;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    .subtitle {
+      font-size: 30px;
+      opacity: 0.92;
+    }
+  }
+}
+
+.content-panel {
+  margin: -28px 24px 0;
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.section-card {
+  background: #fff;
+  border-radius: 24px;
+  box-shadow: 0 6px 18px rgb(241 114 161 / 14%);
+  padding: 24px;
+
+  .section-title {
+    display: block;
+    font-size: 32px;
+    font-weight: 600;
+    color: #cb467f;
+    margin-bottom: 20px;
+  }
+}
+
+.video-item {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  border-radius: 16px;
+  background: #fff1f6;
+  margin-bottom: 16px;
+}
+
+.video-player {
+  width: 100%;
+  height: 360px;
+  border-radius: 12px;
+  background: #000;
+}
+
+.pdf-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  background: #fff1f6;
+  border: 1px solid #ffd3e2;
+  border-radius: 16px;
+  padding: 18px 20px;
+  margin-bottom: 14px;
+}
+
+.pdf-level-one {
+  margin-bottom: 18px;
+}
+
+.pdf-level-one-title {
+  display: block;
+  font-size: 30px;
+  color: #d44f89;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.pdf-level-two {
+  background: #fff8fb;
+  border-radius: 14px;
+  border: 1px solid #ffe1eb;
+  padding: 14px;
+  margin-bottom: 12px;
+}
+
+.pdf-level-two-title {
+  display: block;
+  font-size: 26px;
+  color: #d46095;
+  margin-bottom: 10px;
+}
+
+.item-title {
+  flex: 1;
+  font-size: 28px;
+  color: #c14a80;
+}
+
+.item-action {
+  font-size: 24px;
+  color: #cb467f;
+}
+
+.empty-text {
+  color: #7b8a89;
+  font-size: 26px;
+  padding: 12px 0;
+}
+
+.error-text {
+  color: #dc2626;
+  font-size: 26px;
   text-align: center;
+  padding: 8px 0;
 }

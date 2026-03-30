@@ -8,3 +8,4 @@ export * from "./warmTip";
 export * from "./user";
 export * from "./policy";
 export * from "./ai_chat";
+export * from "./healthGuidance";

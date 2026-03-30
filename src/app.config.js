@@ -13,6 +13,7 @@ export default defineAppConfig({
     "ServiceMap/index",
     "Feedback/index",
     "HealthGuidance/index",
+    "HealthGuidance/preview/index",
     "ElderlyCareMeal/index",
     "MoreServices/index",
   ],

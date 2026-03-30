@@ -1,0 +1,6 @@
+.index {
+  display: grid;
+  grid-template-rows: auto auto minmax(0, 1fr);
+  height: calc(100vh - 100px - env(safe-area-inset-bottom));
+  overflow: hidden;
+}
