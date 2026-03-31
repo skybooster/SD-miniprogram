@@ -87,9 +87,8 @@ const request = (options) => {
         ...headers,
         // 优先使用内存中的 Token，其次读取本地存储
         Authorization: globalToken || Taro.getStorageSync("token") || "",
-        ...header,
+        ...headers,
       },
-      ...rest,
       success: (res) => {
         if (res.statusCode >= 200 && res.statusCode < 300) {
           const result =

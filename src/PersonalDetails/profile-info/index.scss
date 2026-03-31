@@ -7,9 +7,9 @@
 .header-section {
   background: linear-gradient(
     180deg,
-    #ffd21e 0%,
-    #ffd21e 80%,
-    rgb(255 210 30 / 0%) 100%
+    #ff9bc2 0%,
+    #ff9bc2 80%,
+    rgb(255 155 194 / 0%) 100%
   );
   padding-top: 3vh;
   padding-bottom: 8vh;
@@ -50,7 +50,7 @@
         right: 0;
         width: 8vw; /* 24px -> 8vw, 增大 */
         height: 8vw;
-        background: #f7e49c;
+        background: #f8bdd8;
         border: 0.5vw solid #fff;
         border-radius: 50%;
         display: flex;
@@ -116,8 +116,8 @@
     }
 
     .confirm-btn {
-      background: #ffc300;
-      border-color: #ffc300;
+      background: #e464a3;
+      border-color: #e464a3;
       color: #fff;
       border-radius: 4px;
       padding: 0 12px;

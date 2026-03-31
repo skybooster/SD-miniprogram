@@ -49,7 +49,7 @@ export default function Index() {
         images={bannerImages}
         autoplay={3000}
         height={150}
-        onChange={(index) => console.log("当前轮播索引:", index)}
+        //onChange={(index) => console.log("当前轮播索引:", index)}
       />
       <WarmTip text={noticeText} />
       <ServiceGrid />

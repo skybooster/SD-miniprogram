@@ -37,17 +37,13 @@
   position: relative;
   z-index: 1;
   margin: 0 5vw; /* 调整顶部间距以适应新的背景高度 */
-  background: linear-gradient(
-    180deg,
-    rgb(253 168 168 / 77.4%) 0%,
-    #fff281 100%
-  );
+  background: linear-gradient(180deg, rgb(255 155 194 / 85%) 0%, #e464a3 100%);
   border-radius: 16px;
   padding: 30px 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  box-shadow: 0 8px 16px rgb(255 166 0 / 10%);
+  box-shadow: 0 8px 16px rgb(228 100 163 / 18%);
   border: 1px solid rgb(255 255 255 / 60%);
 
   .avatar-container {
@@ -113,7 +109,7 @@
 
       .status-item {
         font-size: 30px;
-        color: rgb(255 51 0);
+        color: #d34d95;
         display: flex;
         align-items: center;
         gap: 1.5vw; /* 使用 vw 替代 px */
@@ -121,7 +117,7 @@
     }
 
     .login-status-tag {
-      background: #ffab2d;
+      background: #e464a3;
       color: #fff;
       font-size: 13px;
       padding: 0.8vh 5vw; /* 使用 vh/vw 替代 px */
@@ -145,7 +141,7 @@
   padding-top: 2%;
 
   .icon-orange {
-    color: #ffab2d;
+    color: #e464a3;
     font-size: 150%;
   }
 
@@ -179,6 +175,6 @@
     height: 7vh; /* 稍微增加高度以容纳更大字体 */
     font-size: 30px; /* 增大字体 */
     font-weight: 400;
-    box-shadow: 0 0.5vh 1.5vh rgb(255 171 45 / 40%);
+    box-shadow: 0 0.5vh 1.5vh rgb(228 100 163 / 35%);
   }
 }

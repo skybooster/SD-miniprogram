@@ -25,7 +25,20 @@ export default defineConfig(async (merge, {}) => {
           : JSON.stringify("http://123.56.99.128:8000/"),
     },
     copy: {
-      patterns: [],
+      patterns: [
+        {
+          from: "node_modules/pdfjs-dist/legacy/build/pdf.worker.min.js",
+          to: "dist/pdf.worker.min.js",
+        },
+        {
+          from: "node_modules/pdfjs-dist/cmaps",
+          to: "dist/cmaps",
+        },
+        {
+          from: "node_modules/pdfjs-dist/standard_fonts",
+          to: "dist/standard_fonts",
+        },
+      ],
       options: {},
     },
     framework: "react",

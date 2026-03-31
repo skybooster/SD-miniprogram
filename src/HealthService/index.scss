@@ -8,7 +8,7 @@
 
 /* ====== 头部导航 ====== */
 .custom-header {
-  background: linear-gradient(135deg, #ff8917 0%, #ff6034 100%);
+  background: linear-gradient(135deg, #ffd972 0%, #f3a94d 100%);
   padding-bottom: 2vh;
   position: relative;
 
@@ -65,7 +65,7 @@
   border-radius: 24px;
   padding: 32px;
   margin-bottom: 24px;
-  box-shadow: 0 4px 20px rgb(255 107 52 / 8%);
+  box-shadow: 0 4px 20px rgb(243 169 77 / 14%);
 
   &:last-child {
     margin-bottom: 0;
@@ -131,7 +131,7 @@
   }
 
   .call-btn {
-    background: linear-gradient(135deg, #ff8917 0%, #ff6034 100%) !important;
+    background: linear-gradient(135deg, #ffd972 0%, #f3a94d 100%) !important;
     border: none !important;
     color: #fff !important;
 
@@ -141,12 +141,12 @@
   }
 
   .location-btn {
-    border-color: #ff7a2e !important;
-    color: #ff7a2e !important;
+    border-color: #f3a94d !important;
+    color: #d68f39 !important;
     background: #fff !important;
 
     &:active {
-      background: #fff7f2 !important;
+      background: #fff8e8 !important;
     }
   }
 }
