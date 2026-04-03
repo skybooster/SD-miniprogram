@@ -59,6 +59,18 @@
   z-index: 1;
 }
 
+.state-text {
+  display: block;
+  padding: 28px 24px;
+  margin-bottom: 20px;
+  border-radius: 20px;
+  background: #fff;
+  color: #6f8195;
+  font-size: 28px;
+  text-align: center;
+  box-shadow: 0 4px 20px rgb(64 157 232 / 10%);
+}
+
 /* ====== 一级卡片：社区 ====== */
 .community-card {
   background: #fff;
