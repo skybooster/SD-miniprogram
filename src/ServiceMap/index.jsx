@@ -4,6 +4,7 @@ import Taro from "@tarojs/taro";
 import { Button, Tag } from "@taroify/core";
 import { ArrowLeft, Arrow, LocationOutlined } from "@taroify/icons";
 import { getServiceMapTypes } from "../api/serviceMap";
+import { getCommunityServices } from "../api/community_service";
 import "./index.scss";
 
 /**
@@ -82,19 +83,115 @@ function renderTree(data, depth = 0) {
 export default function ServiceMap() {
   const [mapTypes, setMapTypes] = useState([]);
   const [expandedIds, setExpandedIds] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [errorText, setErrorText] = useState("");
+
+  const normalizeCommunityKey = (name) => {
+    return String(name || "")
+      .trim()
+      .replace(/\s+/g, "")
+      .replace(/社区$/u, "");
+  };
+
+  const toFiniteNumber = (value) => {
+    const n = Number(value);
+    return Number.isFinite(n) ? n : NaN;
+  };
 
   useEffect(() => {
-    getServiceMapTypes()
-      .then((res) => {
-        const list = Array.isArray(res?.service_map_types)
-          ? [...res.service_map_types].sort((a, b) => a.id - b.id)
-          : [];
+    setLoading(true);
+    setErrorText("");
+    Promise.all([
+      getServiceMapTypes(),
+      getCommunityServices().catch(() => null),
+    ])
+      .then(([res, communityRes]) => {
+        if (res?.code && res.code !== 200) {
+          setErrorText(res?.message || "服务地图接口返回异常");
+        }
+
+        const communityList = Array.isArray(communityRes?.communityServices)
+          ? communityRes.communityServices
+          : Array.isArray(communityRes?.data)
+            ? communityRes.data
+            : [];
+
+        const communityMap = communityList.reduce((acc, item) => {
+          const key = normalizeCommunityKey(item?.name);
+          if (!key) {
+            return acc;
+          }
+          acc[key] = {
+            address: item?.address || "",
+            latitude: toFiniteNumber(item?.latitude ?? item?.lat),
+            longitude: toFiniteNumber(item?.longitude ?? item?.lng),
+          };
+          return acc;
+        }, {});
+
+        const resolveCommunityFallback = (communityName) => {
+          const key = normalizeCommunityKey(communityName);
+          if (!key) {
+            return null;
+          }
+
+          if (communityMap[key]) {
+            return communityMap[key];
+          }
+
+          const fuzzyKey = Object.keys(communityMap).find(
+            (nameKey) => nameKey.includes(key) || key.includes(nameKey),
+          );
+          return fuzzyKey ? communityMap[fuzzyKey] : null;
+        };
+
+        const rawList = Array.isArray(res?.service_map_types)
+          ? res.service_map_types
+          : Array.isArray(res?.serviceMapTypes)
+            ? res.serviceMapTypes
+            : Array.isArray(res?.data)
+              ? res.data
+              : [];
+        const list = rawList
+          .map((item, index) => ({
+            ...item,
+            id: item?.id ?? item?.typeOne ?? index,
+            community_name:
+              item?.community_name || item?.communityName || "未命名社区",
+            type_sum: item?.type_sum ?? item?.typeSum ?? 0,
+            type_name: item?.type_name ?? item?.typeName ?? "",
+            address: item?.address || item?.community_address || "",
+            latitude: toFiniteNumber(item?.latitude ?? item?.lat),
+            longitude: toFiniteNumber(item?.longitude ?? item?.lng),
+          }))
+          .map((item) => {
+            const fallback = resolveCommunityFallback(item.community_name);
+            return {
+              ...item,
+              address: item.address || fallback?.address || item.community_name,
+              latitude: Number.isFinite(item.latitude)
+                ? item.latitude
+                : fallback?.latitude,
+              longitude: Number.isFinite(item.longitude)
+                ? item.longitude
+                : fallback?.longitude,
+            };
+          })
+          .sort((a, b) => (a.id || 0) - (b.id || 0));
         setMapTypes(list);
-        setExpandedIds(list.map((t) => t.id));
+        setExpandedIds(list.map((t) => t.id).filter(Boolean));
+
+        if (!list.length && res?.message && (!res?.code || res.code !== 200)) {
+          setErrorText(res.message);
+        }
       })
       .catch(() => {
         setMapTypes([]);
         setExpandedIds([]);
+        setErrorText("服务地图数据加载失败，请稍后重试");
+      })
+      .finally(() => {
+        setLoading(false);
       });
   }, []);
 
@@ -103,18 +200,21 @@ export default function ServiceMap() {
   };
 
   const handleLocation = (item) => {
-    if (item.latitude && item.longitude) {
+    const latitude = Number(item?.latitude);
+    const longitude = Number(item?.longitude);
+
+    if (Number.isFinite(latitude) && Number.isFinite(longitude)) {
       Taro.openLocation({
         name: item.community_name,
         address: item.address || item.community_name,
-        latitude: item.latitude,
-        longitude: item.longitude,
+        latitude,
+        longitude,
         scale: 16,
       });
     } else {
-      // 没有经纬度时，用关键词搜索附近养老服务
-      Taro.chooseLocation({
-        success: () => {},
+      Taro.showToast({
+        title: "该社区暂无坐标信息，请联系管理员补充",
+        icon: "none",
       });
     }
   };
@@ -129,6 +229,14 @@ export default function ServiceMap() {
    * 安全解析 type_name JSON 字符串
    */
   const parseTypeName = (typeNameStr) => {
+    if (!typeNameStr && typeNameStr !== 0) {
+      return null;
+    }
+
+    if (typeof typeNameStr === "object") {
+      return typeNameStr;
+    }
+
     try {
       return JSON.parse(typeNameStr);
     } catch {
@@ -154,6 +262,16 @@ export default function ServiceMap() {
 
       {/* 一级目录：每个 service_map_type 条目 */}
       <View className="community-list">
+        {loading ? (
+          <Text className="state-text">正在加载服务地图...</Text>
+        ) : null}
+        {!loading && errorText ? (
+          <Text className="state-text">{errorText}</Text>
+        ) : null}
+        {!loading && !errorText && !mapTypes.length ? (
+          <Text className="state-text">暂无服务地图数据</Text>
+        ) : null}
+
         {mapTypes.map((item) => {
           const parsed = parseTypeName(item.type_name);
           const isExpanded = expandedIds.includes(item.id);

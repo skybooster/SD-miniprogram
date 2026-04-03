@@ -1,4 +1,205 @@
-import request, { withQuery } from "./request";
+import protobuf from "protobufjs/minimal";
+import request, { checkAuth, withQuery } from "./request";
+
+const Reader = protobuf.Reader;
+
+const tryParseJsonString = (text) => {
+  try {
+    return JSON.parse(text);
+  } catch {
+    return null;
+  }
+};
+
+const toUint8Array = (data) => {
+  if (data instanceof Uint8Array) {
+    return data;
+  }
+  if (data instanceof ArrayBuffer) {
+    return new Uint8Array(data);
+  }
+  return null;
+};
+
+const decodeServiceMapType = (reader, length) => {
+  const end = length === undefined ? reader.len : reader.pos + length;
+  const message = {};
+
+  while (reader.pos < end) {
+    const tag = reader.uint32();
+    switch (tag >>> 3) {
+      case 1:
+        message.id = reader.int32();
+        break;
+      case 2:
+        message.community_name = reader.string();
+        break;
+      case 3:
+        message.type_sum = reader.int32();
+        break;
+      case 4:
+        message.type_name = reader.string();
+        break;
+      case 5:
+        message.address = reader.string();
+        break;
+      case 6:
+        message.latitude = reader.float();
+        break;
+      case 7:
+        message.longitude = reader.float();
+        break;
+      default:
+        reader.skipType(tag & 7);
+        break;
+    }
+  }
+
+  return message;
+};
+
+const decodeServiceMapContent = (reader, length) => {
+  const end = length === undefined ? reader.len : reader.pos + length;
+  const message = {};
+
+  while (reader.pos < end) {
+    const tag = reader.uint32();
+    switch (tag >>> 3) {
+      case 1:
+        message.id = reader.int32();
+        break;
+      case 2:
+        message.type_one = reader.int32();
+        break;
+      case 3:
+        message.type_two = reader.string();
+        break;
+      case 4:
+        message.content = reader.string();
+        break;
+      default:
+        reader.skipType(tag & 7);
+        break;
+    }
+  }
+
+  return message;
+};
+
+const decodeListResponse = (bytes, listFieldName, decodeItem, tags) => {
+  const { listTag, codeTag, messageTag } = tags;
+  const reader = bytes instanceof Reader ? bytes : Reader.create(bytes);
+  const end = reader.len;
+  const message = { [listFieldName]: [] };
+
+  while (reader.pos < end) {
+    const tag = reader.uint32();
+    const fieldNo = tag >>> 3;
+    switch (fieldNo) {
+      case listTag:
+        message[listFieldName].push(decodeItem(reader, reader.uint32()));
+        break;
+      case codeTag:
+        message.code = reader.int32();
+        break;
+      case messageTag:
+        message.message = reader.string();
+        break;
+      default:
+        reader.skipType(tag & 7);
+        break;
+    }
+  }
+
+  return message;
+};
+
+const decodeTypeResponse = (data) => {
+  const payload = toUint8Array(data);
+  if (!payload) {
+    return normalizeResponse(data);
+  }
+
+  const layouts = [
+    { listTag: 1, codeTag: 2, messageTag: 3 },
+    { listTag: 3, codeTag: 1, messageTag: 2 },
+    { listTag: 2, codeTag: 1, messageTag: 3 },
+  ];
+
+  try {
+    for (const layout of layouts) {
+      const decoded = decodeListResponse(
+        payload,
+        "service_map_types",
+        decodeServiceMapType,
+        layout,
+      );
+      if (
+        decoded.service_map_types?.length ||
+        typeof decoded.code === "number" ||
+        decoded.message
+      ) {
+        return decoded;
+      }
+    }
+  } catch (error) {
+    console.error("Proto decode service_map_type failed:", error);
+  }
+
+  return normalizeResponse(data);
+};
+
+const decodeContentResponse = (data) => {
+  const payload = toUint8Array(data);
+  if (!payload) {
+    return normalizeResponse(data);
+  }
+
+  const layouts = [
+    { listTag: 1, codeTag: 2, messageTag: 3 },
+    { listTag: 3, codeTag: 1, messageTag: 2 },
+    { listTag: 2, codeTag: 1, messageTag: 3 },
+  ];
+
+  try {
+    for (const layout of layouts) {
+      const decoded = decodeListResponse(
+        payload,
+        "service_map_contents",
+        decodeServiceMapContent,
+        layout,
+      );
+      if (
+        decoded.service_map_contents?.length ||
+        typeof decoded.code === "number" ||
+        decoded.message
+      ) {
+        return decoded;
+      }
+    }
+  } catch (error) {
+    console.error("Proto decode service_map_content failed:", error);
+  }
+
+  return normalizeResponse(data);
+};
+
+const normalizeResponse = (res) => {
+  if (res instanceof ArrayBuffer) {
+    try {
+      const text = new TextDecoder("utf-8").decode(new Uint8Array(res));
+      return tryParseJsonString(text) || {};
+    } catch {
+      return {};
+    }
+  }
+
+  if (typeof res === "string") {
+    return tryParseJsonString(res) || {};
+  }
+
+  return res || {};
+};
 
 /**
  * 获取养老服务资源地图类型列表
@@ -20,7 +221,7 @@ export const getServiceMapTypes = () => {
     url: "/api/service_map_type",
     method: "GET",
     responseType: "arraybuffer",
-  }).then((res) => decodeTypeResponse(res));
+  }).then((res) => checkAuth(decodeTypeResponse(res)));
 };
 
 /**
@@ -36,7 +237,7 @@ export const addServiceMapType = (data) => {
     method: "POST",
     data,
     responseType: "arraybuffer",
-  }).then((res) => decodeTypeResponse(res));
+  }).then((res) => checkAuth(decodeTypeResponse(res)));
 };
 
 /**
@@ -53,7 +254,7 @@ export const updateServiceMapType = (id, data) => {
     method: "PUT",
     data,
     responseType: "arraybuffer",
-  }).then((res) => decodeTypeResponse(res));
+  }).then((res) => checkAuth(decodeTypeResponse(res)));
 };
 
 /**
@@ -68,7 +269,7 @@ export const deleteServiceMapType = (id) => {
     url: withQuery("/api/service_map_type", { id }),
     method: "DELETE",
     responseType: "arraybuffer",
-  }).then((res) => decodeTypeResponse(res));
+  }).then((res) => checkAuth(decodeTypeResponse(res)));
 };
 
 // ============ service_map_content 服务地图具体内容 ============
@@ -98,7 +299,7 @@ export const getServiceMapContents = (typeOne, typeTwo) => {
     }),
     method: "GET",
     responseType: "arraybuffer",
-  }).then((res) => decodeContentResponse(res));
+  }).then((res) => checkAuth(decodeContentResponse(res)));
 };
 
 /**
@@ -118,7 +319,7 @@ export const addServiceMapContent = (data) => {
     method: "POST",
     data,
     responseType: "arraybuffer",
-  }).then((res) => decodeContentResponse(res));
+  }).then((res) => checkAuth(decodeContentResponse(res)));
 };
 
 /**
@@ -139,7 +340,7 @@ export const updateServiceMapContent = (typeOne, typeTwo, data) => {
     method: "PUT",
     data,
     responseType: "arraybuffer",
-  }).then((res) => decodeContentResponse(res));
+  }).then((res) => checkAuth(decodeContentResponse(res)));
 };
 
 /**
@@ -158,5 +359,5 @@ export const deleteServiceMapContent = (typeOne, typeTwo) => {
     }),
     method: "DELETE",
     responseType: "arraybuffer",
-  }).then((res) => decodeContentResponse(res));
+  }).then((res) => checkAuth(decodeContentResponse(res)));
 };
